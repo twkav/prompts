@@ -1,0 +1,23 @@
+
+
+We are going to conver this code into a CLI inspired by the Google Cloud CLI. WE really like the CLI design. 
+
+SO lets use that as inpiration. 
+
+
+The gcloud CLI is built around a strict object-oriented command hierarchy, declarative API mappings, and a client-side data transformation engine. Its design minimizes SDK maintenance boilerplate while delivering a uniform user experience across hundreds of Google Cloud services.
+Hierarchical Command Tree
+⚬	Noun-Verb Structure: Commands follow a strict resource-oriented hierarchy: gcloud (e.g., gcloud compute instances create).
+⚬	Side-by-Side Release Tracks: Features roll out in three parallel channels—GA (default), beta, and alpha—within the same executable tree (e.g., gcloud alpha container clusters create).
+Declarative API Binding
+⚬	Schema-Driven Commands: Rather than manually writing CLI parsers for every cloud feature, command flags are defined declaratively via schema files mapped to backend API discovery documents.
+⚬	Direct Payload Translation: Command arguments translate directly into backend REST or gRPC request payloads, keeping CLI flag names predictable across services.
+Data Filtering and Output Engine
+⚬	Client-Side Querying: The CLI fetches raw API objects and filters them locally using --filter (a built-in boolean expression parser), preventing the need for external tools like jq.
+⚬	Universal Serialization: A centralized formatting engine transforms API responses on the fly into tables, JSON, YAML, or raw text values using the --format flag.
+Modular Component Model
+⚬	On-Demand Extensibility: The CLI operates as a lightweight base shell that dynamically installs or updates sub-tools (such as kubectl, bq, gke-gcloud-auth-plugin) via gcloud components.
+⚬	Contextual Profiles: Manages environment variables, active accounts, default regions, and projects via isolated configuration sets (gcloud config configurations), backed by local file-based state storage
+
+
+Can you upate the claude.md with a detaild configuarton of the CLIs design.
