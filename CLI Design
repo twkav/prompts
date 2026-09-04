@@ -21,3 +21,45 @@ Modular Component Model
 
 
 Can you upate the claude.md with a detaild configuarton of the CLIs design.
+
+
+### Brew Install via SSH 
+
+You are working in a repo that ships a CLI via a Homebrew formula (typically under
+`Formula/*.rb`) plus release/install helper scripts (typically `scripts/brew-*.sh`).
+Explain how the Homebrew tap and install work over SSH.
+
+Base your reading strictly on the current branch's HEAD commit (`git rev-parse HEAD`) —
+not the working tree's uncommitted changes and not any other ref. If the working tree
+has uncommitted edits to the formula or scripts, note that your explanation reflects
+HEAD, not those pending edits.
+
+Read these files before answering (find their actual paths/names in this repo first):
+- The formula file — note whether the `url`/`head` lines use `using: :git` with an SSH
+  (`git@github.com:...`) URL rather than an HTTPS tarball, plus any `tag` and `revision`
+  pinning, and any `resource` blocks for language-package deps.
+- The release script — how the formula's SSH URL is derived (often from
+  `git config remote.origin.url`), how a release is tagged/pushed, and how the formula
+  gets copied or published into a tap checkout.
+- The local-install/dev script, if one exists — often a shortcut that tarballs the
+  working tree (`file://` URL, no SSH) into a throwaway local tap for testing without a
+  real release.
+
+Cover, in this order:
+1. Why SSH at all — if the source repo is private, GitHub's (or GitLab's/etc.) HTTPS
+   tarball fetch 404s without a token; `using: :git` + an SSH URL makes Homebrew
+   `git clone` it instead, reusing the caller's existing SSH key/agent.
+2. How that appears in the formula (quote the actual `url`, `head`, `tag`, `revision`
+   lines).
+3. The two-step user install command (`brew tap ... <ssh-url>` then `brew install ...`)
+   and why the tap fetch *and* the source fetch both need SSH access.
+4. How the release script produces/updates the formula (SSH URL derivation, tag + push,
+   revision pinning, dependency-resource regeneration, any tap-copy step).
+5. How the local-install script differs (local tarball, no SSH, for iterating without
+   cutting a release) — if the repo has one.
+6. Why any bundled dependency `resource` stanzas don't need SSH (public package
+   registry over HTTPS) — only the CLI's own source is private.
+
+Keep it concrete: quote the actual lines/paths from this repo, don't paraphrase into
+generic Homebrew theory. End with a short summary of what a new user actually has to
+do to install.
